@@ -10,6 +10,9 @@ const RoomScreen = () => {
   const [myStream, setMyStream] = useState();
   const [remoteStream, setRemoteStream] = useState();
   const [isCallStarted, setIsCallStarted] = useState(false);
+  const [isInitiator, setIsInitiator] = useState(false);
+  const [streamSent, setStreamSent] = useState(false);
+
   const navigate = useNavigate();
 
   const endCall = () => {
@@ -27,6 +30,7 @@ const RoomScreen = () => {
   const handleUserJoined = useCallback(({ email, id }) => {
     console.log(`Email ${email} joined room`);
     setRemoteSocketId(id);
+    setIsInitiator(true); // I'm the initiator, the other user just joined
   }, []);
 
   const handleCallUser = useCallback(async () => {
@@ -60,6 +64,7 @@ const RoomScreen = () => {
     for (const track of myStream.getTracks()) {
       peer.peer.addTrack(track, myStream);
     }
+    setStreamSent(true); // Mark as sent to hide the button
   }, [myStream]);
 
   const handleCallAccepted = useCallback(
@@ -164,7 +169,7 @@ const RoomScreen = () => {
         }
 
         .stream-player {
-          border-radius: 1rem;
+          border-radius: 0.5rem;
           overflow: hidden;
           box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
           margin-top: 1rem;
@@ -172,19 +177,19 @@ const RoomScreen = () => {
       `}</style>
 
       <div className="room-container">
-        <h1>🔮 Magic Call Room</h1>
+        <h1>🔮 Magic Call Room (By Harsh)</h1>
         <h3>
           {remoteSocketId ? "User Connected" : "Waiting for a user to join..."}
         </h3>
 
         {!isCallStarted && remoteSocketId && (
           <button className="btn" onClick={handleCallUser}>
-           📞 Call
+            📞 Call
           </button>
         )}
 
         <div style={{ display: "flex", gap: "1rem" }}>
-          {myStream && remoteSocketId && (
+          {/* {myStream && remoteSocketId && (
             <button
               style={{
                 backgroundColor: "green",
@@ -199,9 +204,28 @@ const RoomScreen = () => {
               }}
               onClick={sendStreams}
             >
-             💻 Send Stream
+              💻 Send Stream
+            </button>
+          )} */}
+          {myStream && remoteSocketId && !isInitiator && !streamSent && (
+            <button
+              style={{
+                backgroundColor: "green",
+                color: "#fff",
+                padding: "10px 20px",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                margin: "20px auto",
+                display: "block",
+                fontSize: "16px",
+              }}
+              onClick={sendStreams}
+            >
+              💻 Send Stream
             </button>
           )}
+
           {(myStream || remoteStream) && (
             <button
               onClick={endCall}
@@ -221,29 +245,34 @@ const RoomScreen = () => {
             </button>
           )}
         </div>
-
-        {myStream && (
-          <div className="stream-section">
-            <h2>My Stream</h2>
-            <div className="stream-player">
-              <ReactPlayer playing height="240px" width="100%" url={myStream} />
+        <div style={{ display: "flex", gap: "5rem" }}>
+          {myStream && (
+            <div className="stream-section">
+              <h2>My Stream</h2>
+              <div className="stream-player">
+                <ReactPlayer
+                  playing
+                  height="250px"
+                  width="100%"
+                  url={myStream}
+                />
+              </div>
             </div>
-          </div>
-        )}
-
-        {remoteStream && (
-          <div className="stream-section">
-            <h2>Remote Stream</h2>
-            <div className="stream-player">
-              <ReactPlayer
-                playing
-                height="240px"
-                width="100%"
-                url={remoteStream}
-              />
+          )}
+          {remoteStream && (
+            <div className="stream-section">
+              <h2>Remote Stream</h2>
+              <div className="stream-player">
+                <ReactPlayer
+                  playing
+                  height="250px"
+                  width="100%"
+                  url={remoteStream}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   );
