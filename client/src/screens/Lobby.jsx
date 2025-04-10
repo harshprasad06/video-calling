@@ -124,6 +124,15 @@ const LobbyScreen = () => {
             transform: translateY(0);
           }
         }
+
+@media (max-width: 768px) {
+ .lobby-container{
+ padding-left:10px;
+ padding-right:10px;
+
+ }
+}
+
       `}</style>
 
       <div className="lobby-container">

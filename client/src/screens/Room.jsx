@@ -134,7 +134,8 @@ const RoomScreen = () => {
 
   return (
     <>
-      <style>{`
+      <style>
+        {`
         .room-container {
           height: 100vh;
           background: radial-gradient(circle, #1e003c, #0c0032);
@@ -144,6 +145,7 @@ const RoomScreen = () => {
           padding: 2rem;
           font-family: 'Poppins', sans-serif;
           color: white;
+          overflow:scroll
         }
 
         .btn {
@@ -174,7 +176,23 @@ const RoomScreen = () => {
           box-shadow: 0 0 25px rgba(236, 72, 153, 0.3);
           margin-top: 1rem;
         }
-      `}</style>
+          .stream-wrapper {
+  display: flex;
+  gap: 5rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .stream-wrapper {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+      `}
+      </style>
 
       <div className="room-container">
         <h1>🔮 Magic Call Room (By Harsh)</h1>
@@ -245,7 +263,7 @@ const RoomScreen = () => {
             </button>
           )}
         </div>
-        <div style={{ display: "flex", gap: "5rem" }}>
+        <div className="stream-wrapper">
           {myStream && (
             <div className="stream-section">
               <h2>My Stream</h2>
