@@ -269,6 +269,7 @@ const RoomScreen = () => {
               <h2>My Stream</h2>
               <div className="stream-player">
                 <ReactPlayer
+                  muted={true}
                   playing
                   height="250px"
                   width="100%"
