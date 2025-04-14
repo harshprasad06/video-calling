@@ -271,6 +271,7 @@ const RoomScreen = () => {
                 <ReactPlayer
                   muted={true}
                   playing
+                  playsinline
                   height="250px"
                   width="100%"
                   url={myStream}
@@ -284,6 +285,7 @@ const RoomScreen = () => {
               <div className="stream-player">
                 <ReactPlayer
                   playing
+                  playsinline
                   height="250px"
                   width="100%"
                   url={remoteStream}
